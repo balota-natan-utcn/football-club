@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FC Thunder - Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>FC Thunder Admin Panel</h1>
+            <button id="logoutBtn" class="btn btn-danger">Logout</button>
+        </header>
+
+        <nav class="admin-nav">
+            <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+            <button class="nav-btn" data-section="players">Players</button>
+            <button class="nav-btn" data-section="matches">Matches</button>
+            <button class="nav-btn" data-section="news">News</button>
+            <button class="nav-btn" data-section="gallery">Gallery</button>
+            <button class="nav-btn" data-section="sponsors">Sponsors</button>
+            <button class="nav-btn" data-section="contacts">Contacts</button>
+        </nav>
+
+        <main class="admin-main">
+            <section id="dashboard" class="admin-section active">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Players</h3>
+                        <span id="playersCount">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Matches</h3>
+                        <span id="matchesCount">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>News Articles</h3>
+                        <span id="newsCount">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Gallery Items</h3>
+                        <span id="galleryCount">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="players" class="admin-section">
+                <div class="section-header">
+                    <h2>Players Management</h2>
+                    <button class="btn btn-primary" onclick="showPlayerForm()">Add Player</button>
+                </div>
+                <div class="table-container">
+                    <table id="playersTable">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Jersey #</th>
+                                <th>Age</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="matches" class="admin-section">
+                <div class="section-header">
+                    <h2>Matches Management</h2>
+                    <button class="btn btn-primary" onclick="showMatchForm()">Add Match</button>
+                </div>
+                <div class="table-container">
+                    <table id="matchesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Opponent</th>
+                                <th>Venue</th>
+                                <th>Status</th>
+                                <th>Score</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="news" class="admin-section">
+                <div class="section-header">
+                    <h2>News Management</h2>
+                    <button class="btn btn-primary" onclick="showNewsForm()">Add News</button>
+                </div>
+                <div class="table-container">
+                    <table id="newsTable">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Published</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="gallery" class="admin-section">
+                <div class="section-header">
+                    <h2>Gallery Management</h2>
+                    <button class="btn btn-primary" onclick="showGalleryForm()">Add Media</button>
+                </div>
+                <div class="gallery-grid" id="galleryGrid"></div>
+            </section>
+
+            <section id="sponsors" class="admin-section">
+                <div class="section-header">
+                    <h2>Sponsors Management</h2>
+                    <button class="btn btn-primary" onclick="showSponsorForm()">Add Sponsor</button>
+                </div>
+                <div class="table-container">
+                    <table id="sponsorsTable">
+                        <thead>
+                            <tr>
+                                <th>Logo</th>
+                                <th>Name</th>
+                                <th>Tier</th>
+                                <th>Website</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="contacts" class="admin-section">
+                <div class="section-header">
+                    <h2>Contact Messages</h2>
+                </div>
+                <div class="table-container">
+                    <table id="contactsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for forms -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

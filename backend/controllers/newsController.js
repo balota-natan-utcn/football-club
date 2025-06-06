@@ -1,0 +1,85 @@
+const News = require('../models/News');
+
+const getAllNews = async (req, res) => {
+  try {
+    const { published = true } = req.query;
+    const filter = published === 'all' ? {} : { published: published === 'true' };
+    
+    const news = await News.find(filter).sort({ createdAt: -1 });
+    res.json(news);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+const getNewsItem = async (req, res) => {
+  try {
+    const newsItem = await News.findById(req.params.id);
+    if (!newsItem) {
+      return res.status(404).json({ message: 'News item not found' });
+    }
+    res.json(newsItem);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+const createNews = async (req, res) => {
+  try {
+    const newsData = { ...req.body };
+    
+    if (req.file) {
+      newsData.image = `/resources/${req.file.filename}`;
+    }
+
+    const newsItem = new News(newsData);
+    await newsItem.save();
+    res.status(201).json(newsItem);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+const updateNews = async (req, res) => {
+  try {
+    const updateData = { ...req.body };
+    
+    if (req.file) {
+      updateData.image = `/resources/${req.file.filename}`;
+    }
+
+    const newsItem = await News.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+    
+    if (!newsItem) {
+      return res.status(404).json({ message: 'News item not found' });
+    }
+    
+    res.json(newsItem);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+const deleteNews = async (req, res) => {
+  try {
+    const newsItem = await News.findByIdAndDelete(req.params.id);
+    if (!newsItem) {
+      return res.status(404).json({ message: 'News item not found' });
+    }
+    res.json({ message: 'News item deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = {
+  getAllNews,
+  getNewsItem,
+  createNews,
+  updateNews,
+  deleteNews
+};
