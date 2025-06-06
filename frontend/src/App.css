@@ -19,7 +19,7 @@ body {
 
 /* Header Styles */
 .header {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
   color: white;
   padding: 1rem 0;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -97,32 +97,32 @@ body {
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background-color: #1e40af;
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color: #1d4ed8;
 }
 
 .btn-secondary {
-  background-color: #6c757d;
-  color: white;
+  background-color: #fbbf24;
+  color: #1f2937;
 }
 
 .btn-secondary:hover {
-  background-color: #545b62;
+  background-color: #f59e0b;
 }
 
 .btn-outline {
   background-color: transparent;
   color: white;
-  border: 2px solid white;
+  border: 2px solid #fbbf24;
 }
 
 .btn-outline:hover {
-  background-color: white;
-  color: #1e3c72;
+  background-color: #fbbf24;
+  color: #1f2937;
 }
 
 /* Main Content */
@@ -133,7 +133,7 @@ body {
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(rgba(30,60,114,0.8), rgba(42,82,152,0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23228B22" width="1200" height="600"/><circle fill="%23FFFFFF" cx="600" cy="300" r="100" stroke="%23000" stroke-width="2"/></svg>');
+  background: linear-gradient(rgba(30,64,175,0.9), rgba(59,130,246,0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23228B22" width="1200" height="600"/><circle fill="%23FFFFFF" cx="600" cy="300" r="100" stroke="%23000" stroke-width="2"/></svg>');
   background-size: cover;
   background-position: center;
   color: white;
@@ -165,7 +165,7 @@ body {
 }
 
 .home-section h2 {
-  color: #1e3c72;
+  color: #1e40af;
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -201,7 +201,7 @@ body {
 }
 
 .news-content h3 {
-  color: #1e3c72;
+  color: #1e40af;
   margin-bottom: 0.5rem;
 }
 
@@ -240,7 +240,7 @@ body {
 }
 
 .vs, .score {
-  color: #007bff;
+  color: #fbbf24;
   font-weight: bold;
 }
 
@@ -251,7 +251,7 @@ body {
 }
 
 .page-header h1 {
-  color: #1e3c72;
+  color: #1e40af;
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
 }
@@ -267,8 +267,8 @@ body {
 .filter-btn {
   padding: 0.5rem 1rem;
   background: white;
-  border: 2px solid #007bff;
-  color: #007bff;
+  border: 2px solid #1e40af;
+  color: #1e40af;
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s;
@@ -276,7 +276,7 @@ body {
 
 .filter-btn.active,
 .filter-btn:hover {
-  background: #007bff;
+  background: #1e40af;
   color: white;
 }
 
@@ -313,7 +313,7 @@ body {
 .placeholder-image {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -326,8 +326,8 @@ body {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #007bff;
-  color: white;
+  background: #fbbf24;
+  color: #1f2937;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -336,6 +336,7 @@ body {
   justify-content: center;
   font-weight: bold;
   font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .player-info {
@@ -343,15 +344,20 @@ body {
 }
 
 .player-info h3 {
-  color: #1e3c72;
+  color: #1e40af;
   margin-bottom: 0.5rem;
   font-size: 1.3rem;
 }
 
 .position {
-  color: #007bff;
+  color: #fbbf24;
   font-weight: bold;
   margin-bottom: 1rem;
+  background: #fef3c7;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  display: inline-block;
+  font-size: 0.9rem;
 }
 
 .player-details {
@@ -387,7 +393,7 @@ body {
 }
 
 .auth-form h1 {
-  color: #1e3c72;
+  color: #1e40af;
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -418,7 +424,8 @@ body {
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #1e40af;
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
 .error-message {
@@ -445,7 +452,7 @@ body {
 }
 
 .auth-link a {
-  color: #007bff;
+  color: #1e40af;
   text-decoration: none;
 }
 
@@ -455,7 +462,7 @@ body {
 
 /* Footer */
 .footer {
-  background: #1e3c72;
+  background: #1e40af;
   color: white;
   padding: 3rem 0 1rem;
   margin-top: 4rem;
@@ -529,7 +536,7 @@ body {
     top: 100%;
     left: 0;
     right: 0;
-    background: #1e3c72;
+    background: #1e40af;
     flex-direction: column;
     padding: 1rem;
     gap: 0;

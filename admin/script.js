@@ -343,46 +343,786 @@ function showError(message) {
 
 // Placeholder functions for other sections
 async function loadMatches() {
-    // Similar implementation for matches
-    console.log('Loading matches...');
+    try {
+        const response = await fetch(`${API_BASE}/matches`);
+        const matches = await response.json();
+        
+        const tbody = document.querySelector('#matchesTable tbody');
+        tbody.innerHTML = '';
+
+        matches.forEach(match => {
+            const row = document.createElement('tr');
+            const matchDate = new Date(match.date).toLocaleDateString();
+            const score = match.status === 'completed' ? 
+                `${match.homeScore || 0} - ${match.awayScore || 0}` : 
+                match.status;
+            
+            row.innerHTML = `
+                <td>${matchDate}</td>
+                <td>${match.opponent}</td>
+                <td>${match.venue}</td>
+                <td><span class="status-badge status-${match.status}">${match.status}</span></td>
+                <td>${score}</td>
+                <td>
+                    <button class="btn btn-warning btn-small" onclick="editMatch('${match._id}')">Edit</button>
+                    <button class="btn btn-danger btn-small" onclick="deleteMatch('${match._id}')">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading matches:', error);
+    }
 }
 
 function showMatchForm(matchId = null) {
-    // Similar implementation for match form
-    console.log('Show match form');
+    const title = matchId ? 'Edit Match' : 'Add Match';
+    const modalBody = document.getElementById('modalBody');
+    
+    modalBody.innerHTML = `
+        <h2>${title}</h2>
+        <form id="matchForm">
+            <div class="form-group">
+                <label for="matchOpponent">Opponent</label>
+                <input type="text" id="matchOpponent" name="opponent" required>
+            </div>
+            <div class="form-group">
+                <label for="matchDate">Date</label>
+                <input type="date" id="matchDate" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="matchTime">Time</label>
+                <input type="time" id="matchTime" name="time" required>
+            </div>
+            <div class="form-group">
+                <label for="matchVenue">Venue</label>
+                <input type="text" id="matchVenue" name="venue" required>
+            </div>
+            <div class="form-group">
+                <label for="matchIsHome">Match Type</label>
+                <select id="matchIsHome" name="isHome" required>
+                    <option value="true">Home</option>
+                    <option value="false">Away</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="matchStatus">Status</label>
+                <select id="matchStatus" name="status" required>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="matchHomeScore">Home Score</label>
+                <input type="number" id="matchHomeScore" name="homeScore" min="0">
+            </div>
+            <div class="form-group">
+                <label for="matchAwayScore">Away Score</label>
+                <input type="number" id="matchAwayScore" name="awayScore" min="0">
+            </div>
+            <div class="form-group">
+                <label for="matchDescription">Description</label>
+                <textarea id="matchDescription" name="description" placeholder="Match notes..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Match</button>
+            </div>
+        </form>
+    `;
+
+    if (matchId) {
+        loadMatchData(matchId);
+    }
+
+    document.getElementById('matchForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveMatch(matchId);
+    });
+
+    showModal();
+}
+
+async function loadMatchData(matchId) {
+    try {
+        const response = await fetch(`${API_BASE}/matches/${matchId}`);
+        const match = await response.json();
+
+        document.getElementById('matchOpponent').value = match.opponent;
+        document.getElementById('matchDate').value = match.date.split('T')[0];
+        document.getElementById('matchTime').value = match.time;
+        document.getElementById('matchVenue').value = match.venue;
+        document.getElementById('matchIsHome').value = match.isHome.toString();
+        document.getElementById('matchStatus').value = match.status;
+        document.getElementById('matchHomeScore').value = match.homeScore || '';
+        document.getElementById('matchAwayScore').value = match.awayScore || '';
+        document.getElementById('matchDescription').value = match.description || '';
+    } catch (error) {
+        console.error('Error loading match data:', error);
+    }
+}
+
+async function saveMatch(matchId) {
+    try {
+        const form = document.getElementById('matchForm');
+        const formData = new FormData(form);
+        
+        const matchData = {
+            opponent: formData.get('opponent'),
+            date: formData.get('date'),
+            time: formData.get('time'),
+            venue: formData.get('venue'),
+            isHome: formData.get('isHome') === 'true',
+            status: formData.get('status'),
+            description: formData.get('description')
+        };
+
+        if (formData.get('homeScore')) {
+            matchData.homeScore = parseInt(formData.get('homeScore'));
+        }
+        if (formData.get('awayScore')) {
+            matchData.awayScore = parseInt(formData.get('awayScore'));
+        }
+
+        const url = matchId ? `${API_BASE}/matches/${matchId}` : `${API_BASE}/matches`;
+        const method = matchId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method,
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(matchData)
+        });
+
+        if (response.ok) {
+            closeModal();
+            loadMatches();
+            showSuccess(matchId ? 'Match updated successfully' : 'Match added successfully');
+        } else {
+            const error = await response.json();
+            showError(error.message || 'Failed to save match');
+        }
+    } catch (error) {
+        console.error('Error saving match:', error);
+        showError('Failed to save match');
+    }
+}
+
+async function editMatch(matchId) {
+    showMatchForm(matchId);
+}
+
+async function deleteMatch(matchId) {
+    if (!confirm('Are you sure you want to delete this match?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/matches/${matchId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            loadMatches();
+            showSuccess('Match deleted successfully');
+        } else {
+            showError('Failed to delete match');
+        }
+    } catch (error) {
+        console.error('Error deleting match:', error);
+        showError('Failed to delete match');
+    }
 }
 
 async function loadNews() {
-    // Similar implementation for news
-    console.log('Loading news...');
+    try {
+        const response = await fetch(`${API_BASE}/news?published=all`);
+        const news = await response.json();
+        
+        const tbody = document.querySelector('#newsTable tbody');
+        tbody.innerHTML = '';
+
+        news.forEach(article => {
+            const row = document.createElement('tr');
+            const publishedBadge = article.published ? 
+                '<span class="status-badge status-read">Published</span>' : 
+                '<span class="status-badge status-new">Draft</span>';
+            
+            row.innerHTML = `
+                <td>${article.title}</td>
+                <td>${article.author}</td>
+                <td><span class="category-badge ${article.category}">${article.category}</span></td>
+                <td>${new Date(article.createdAt).toLocaleDateString()}</td>
+                <td>${publishedBadge}</td>
+                <td>
+                    <button class="btn btn-warning btn-small" onclick="editNews('${article._id}')">Edit</button>
+                    <button class="btn btn-danger btn-small" onclick="deleteNews('${article._id}')">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading news:', error);
+    }
 }
 
 function showNewsForm(newsId = null) {
-    // Similar implementation for news form
-    console.log('Show news form');
+    const title = newsId ? 'Edit News Article' : 'Add News Article';
+    const modalBody = document.getElementById('modalBody');
+    
+    modalBody.innerHTML = `
+        <h2>${title}</h2>
+        <form id="newsForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="newsTitle">Title</label>
+                <input type="text" id="newsTitle" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="newsAuthor">Author</label>
+                <input type="text" id="newsAuthor" name="author" required>
+            </div>
+            <div class="form-group">
+                <label for="newsCategory">Category</label>
+                <select id="newsCategory" name="category" required>
+                    <option value="general">General</option>
+                    <option value="match">Match</option>
+                    <option value="player">Player</option>
+                    <option value="club">Club</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="newsContent">Content</label>
+                <textarea id="newsContent" name="content" rows="8" required placeholder="Article content..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="newsImage">Featured Image</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="newsImage" name="image" accept="image/*">
+                    <p>Click to select image or drag and drop</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="newsPublished">Status</label>
+                <select id="newsPublished" name="published" required>
+                    <option value="true">Published</option>
+                    <option value="false">Draft</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Article</button>
+            </div>
+        </form>
+    `;
+
+    if (newsId) {
+        loadNewsData(newsId);
+    }
+
+    document.getElementById('newsForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveNews(newsId);
+    });
+
+    showModal();
+}
+
+async function loadNewsData(newsId) {
+    try {
+        const response = await fetch(`${API_BASE}/news/${newsId}`);
+        const article = await response.json();
+
+        document.getElementById('newsTitle').value = article.title;
+        document.getElementById('newsAuthor').value = article.author;
+        document.getElementById('newsCategory').value = article.category;
+        document.getElementById('newsContent').value = article.content;
+        document.getElementById('newsPublished').value = article.published.toString();
+    } catch (error) {
+        console.error('Error loading news data:', error);
+    }
+}
+
+async function saveNews(newsId) {
+    try {
+        const form = document.getElementById('newsForm');
+        const formData = new FormData(form);
+
+        const url = newsId ? `${API_BASE}/news/${newsId}` : `${API_BASE}/news`;
+        const method = newsId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method,
+            credentials: 'include',
+            body: formData
+        });
+
+        if (response.ok) {
+            closeModal();
+            loadNews();
+            showSuccess(newsId ? 'Article updated successfully' : 'Article added successfully');
+        } else {
+            const error = await response.json();
+            showError(error.message || 'Failed to save article');
+        }
+    } catch (error) {
+        console.error('Error saving article:', error);
+        showError('Failed to save article');
+    }
+}
+
+async function editNews(newsId) {
+    showNewsForm(newsId);
+}
+
+async function deleteNews(newsId) {
+    if (!confirm('Are you sure you want to delete this article?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/news/${newsId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            loadNews();
+            showSuccess('Article deleted successfully');
+        } else {
+            showError('Failed to delete article');
+        }
+    } catch (error) {
+        console.error('Error deleting article:', error);
+        showError('Failed to delete article');
+    }
 }
 
 async function loadGallery() {
-    // Similar implementation for gallery
-    console.log('Loading gallery...');
+    try {
+        const response = await fetch(`${API_BASE}/gallery`);
+        const gallery = await response.json();
+        
+        const container = document.getElementById('galleryGrid');
+        container.innerHTML = '';
+
+        gallery.forEach(item => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            
+            const mediaElement = item.type === 'image' ? 
+                `<img src="${item.url}" alt="${item.title}">` :
+                `<video src="${item.url}" ${item.thumbnail ? `poster="${item.thumbnail}"` : ''}></video>`;
+            
+            galleryItem.innerHTML = `
+                ${mediaElement}
+                <div class="gallery-item-info">
+                    <h4>${item.title}</h4>
+                    <p>${item.description || 'No description'}</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn btn-warning btn-small" onclick="editGalleryItem('${item._id}')">Edit</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteGalleryItem('${item._id}')">Delete</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(galleryItem);
+        });
+    } catch (error) {
+        console.error('Error loading gallery:', error);
+    }
 }
 
 function showGalleryForm(galleryId = null) {
-    // Similar implementation for gallery form
-    console.log('Show gallery form');
+    const title = galleryId ? 'Edit Media Item' : 'Add Media Item';
+    const modalBody = document.getElementById('modalBody');
+    
+    modalBody.innerHTML = `
+        <h2>${title}</h2>
+        <form id="galleryForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="galleryTitle">Title</label>
+                <input type="text" id="galleryTitle" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="galleryDescription">Description</label>
+                <textarea id="galleryDescription" name="description" placeholder="Optional description..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="galleryMedia">Media File</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="galleryMedia" name="media" accept="image/*,video/*" ${!galleryId ? 'required' : ''}>
+                    <p>Click to select image or video file</p>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Media</button>
+            </div>
+        </form>
+    `;
+
+    if (galleryId) {
+        loadGalleryData(galleryId);
+    }
+
+    document.getElementById('galleryForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveGalleryItem(galleryId);
+    });
+
+    showModal();
+}
+
+async function loadGalleryData(galleryId) {
+    try {
+        const response = await fetch(`${API_BASE}/gallery/${galleryId}`);
+        const item = await response.json();
+
+        document.getElementById('galleryTitle').value = item.title;
+        document.getElementById('galleryDescription').value = item.description || '';
+    } catch (error) {
+        console.error('Error loading gallery data:', error);
+    }
+}
+
+async function saveGalleryItem(galleryId) {
+    try {
+        const form = document.getElementById('galleryForm');
+        const formData = new FormData(form);
+
+        const url = galleryId ? `${API_BASE}/gallery/${galleryId}` : `${API_BASE}/gallery`;
+        const method = galleryId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method,
+            credentials: 'include',
+            body: formData
+        });
+
+        if (response.ok) {
+            closeModal();
+            loadGallery();
+            showSuccess(galleryId ? 'Media updated successfully' : 'Media added successfully');
+        } else {
+            const error = await response.json();
+            showError(error.message || 'Failed to save media');
+        }
+    } catch (error) {
+        console.error('Error saving media:', error);
+        showError('Failed to save media');
+    }
+}
+
+async function editGalleryItem(galleryId) {
+    showGalleryForm(galleryId);
+}
+
+async function deleteGalleryItem(galleryId) {
+    if (!confirm('Are you sure you want to delete this media item?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/gallery/${galleryId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            loadGallery();
+            showSuccess('Media deleted successfully');
+        } else {
+            showError('Failed to delete media');
+        }
+    } catch (error) {
+        console.error('Error deleting media:', error);
+        showError('Failed to delete media');
+    }
 }
 
 async function loadSponsors() {
-    // Similar implementation for sponsors
-    console.log('Loading sponsors...');
+    try {
+        const response = await fetch(`${API_BASE}/sponsors`);
+        const sponsors = await response.json();
+        
+        const tbody = document.querySelector('#sponsorsTable tbody');
+        tbody.innerHTML = '';
+
+        sponsors.forEach(sponsor => {
+            const row = document.createElement('tr');
+            const website = sponsor.website ? 
+                `<a href="${sponsor.website}" target="_blank">Visit</a>` : 
+                'N/A';
+            
+            row.innerHTML = `
+                <td>
+                    <img src="${sponsor.logo}" alt="${sponsor.name}" style="width: 50px; height: 50px; object-fit: contain;">
+                </td>
+                <td>${sponsor.name}</td>
+                <td><span class="status-badge status-${sponsor.tier}">${sponsor.tier}</span></td>
+                <td>${website}</td>
+                <td>
+                    <button class="btn btn-warning btn-small" onclick="editSponsor('${sponsor._id}')">Edit</button>
+                    <button class="btn btn-danger btn-small" onclick="deleteSponsor('${sponsor._id}')">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading sponsors:', error);
+    }
 }
 
 function showSponsorForm(sponsorId = null) {
-    // Similar implementation for sponsor form
-    console.log('Show sponsor form');
+    const title = sponsorId ? 'Edit Sponsor' : 'Add Sponsor';
+    const modalBody = document.getElementById('modalBody');
+    
+    modalBody.innerHTML = `
+        <h2>${title}</h2>
+        <form id="sponsorForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="sponsorName">Name</label>
+                <input type="text" id="sponsorName" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="sponsorTier">Tier</label>
+                <select id="sponsorTier" name="tier" required>
+                    <option value="partner">Partner</option>
+                    <option value="secondary">Secondary</option>
+                    <option value="main">Main</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sponsorWebsite">Website</label>
+                <input type="url" id="sponsorWebsite" name="website" placeholder="https://example.com">
+            </div>
+            <div class="form-group">
+                <label for="sponsorDescription">Description</label>
+                <textarea id="sponsorDescription" name="description" placeholder="Optional description..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="sponsorLogo">Logo</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="sponsorLogo" name="logo" accept="image/*" ${!sponsorId ? 'required' : ''}>
+                    <p>Click to select logo image</p>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Sponsor</button>
+            </div>
+        </form>
+    `;
+
+    if (sponsorId) {
+        loadSponsorData(sponsorId);
+    }
+
+    document.getElementById('sponsorForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveSponsor(sponsorId);
+    });
+
+    showModal();
+}
+
+async function loadSponsorData(sponsorId) {
+    try {
+        const response = await fetch(`${API_BASE}/sponsors/${sponsorId}`);
+        const sponsor = await response.json();
+
+        document.getElementById('sponsorName').value = sponsor.name;
+        document.getElementById('sponsorTier').value = sponsor.tier;
+        document.getElementById('sponsorWebsite').value = sponsor.website || '';
+        document.getElementById('sponsorDescription').value = sponsor.description || '';
+    } catch (error) {
+        console.error('Error loading sponsor data:', error);
+    }
+}
+
+async function saveSponsor(sponsorId) {
+    try {
+        const form = document.getElementById('sponsorForm');
+        const formData = new FormData(form);
+
+        const url = sponsorId ? `${API_BASE}/sponsors/${sponsorId}` : `${API_BASE}/sponsors`;
+        const method = sponsorId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method,
+            credentials: 'include',
+            body: formData
+        });
+
+        if (response.ok) {
+            closeModal();
+            loadSponsors();
+            showSuccess(sponsorId ? 'Sponsor updated successfully' : 'Sponsor added successfully');
+        } else {
+            const error = await response.json();
+            showError(error.message || 'Failed to save sponsor');
+        }
+    } catch (error) {
+        console.error('Error saving sponsor:', error);
+        showError('Failed to save sponsor');
+    }
+}
+
+async function editSponsor(sponsorId) {
+    showSponsorForm(sponsorId);
+}
+
+async function deleteSponsor(sponsorId) {
+    if (!confirm('Are you sure you want to delete this sponsor?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/sponsors/${sponsorId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            loadSponsors();
+            showSuccess('Sponsor deleted successfully');
+        } else {
+            showError('Failed to delete sponsor');
+        }
+    } catch (error) {
+        console.error('Error deleting sponsor:', error);
+        showError('Failed to delete sponsor');
+    }
 }
 
 async function loadContacts() {
-    // Similar implementation for contacts
-    console.log('Loading contacts...');
+    try {
+        const response = await fetch(`${API_BASE}/contact`);
+        const contacts = await response.json();
+        
+        const tbody = document.querySelector('#contactsTable tbody');
+        tbody.innerHTML = '';
+
+        contacts.forEach(contact => {
+            const row = document.createElement('tr');
+            const statusBadge = `<span class="status-badge status-${contact.status}">${contact.status}</span>`;
+            
+            row.innerHTML = `
+                <td>${contact.name}</td>
+                <td>${contact.email}</td>
+                <td>${contact.subject}</td>
+                <td>${new Date(contact.createdAt).toLocaleDateString()}</td>
+                <td>${statusBadge}</td>
+                <td>
+                    <button class="btn btn-warning btn-small" onclick="viewContact('${contact._id}')">View</button>
+                    <button class="btn btn-success btn-small" onclick="markAsRead('${contact._id}')">Mark Read</button>
+                    <button class="btn btn-danger btn-small" onclick="deleteContact('${contact._id}')">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading contacts:', error);
+    }
+}
+
+async function viewContact(contactId) {
+    try {
+        const response = await fetch(`${API_BASE}/contact`);
+        const contacts = await response.json();
+        const contact = contacts.find(c => c._id === contactId);
+        
+        if (!contact) return;
+
+        const modalBody = document.getElementById('modalBody');
+        modalBody.innerHTML = `
+            <h2>Contact Message</h2>
+            <div class="contact-details">
+                <div class="form-group">
+                    <label><strong>Name:</strong></label>
+                    <p>${contact.name}</p>
+                </div>
+                <div class="form-group">
+                    <label><strong>Email:</strong></label>
+                    <p>${contact.email}</p>
+                </div>
+                <div class="form-group">
+                    <label><strong>Subject:</strong></label>
+                    <p>${contact.subject}</p>
+                </div>
+                <div class="form-group">
+                    <label><strong>Date:</strong></label>
+                    <p>${new Date(contact.createdAt).toLocaleDateString()}</p>
+                </div>
+                <div class="form-group">
+                    <label><strong>Message:</strong></label>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 5px; margin-top: 0.5rem;">
+                        <p>${contact.message}</p>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    <button type="button" class="btn btn-success" onclick="markAsRead('${contact._id}'); closeModal();">Mark as Read</button>
+                </div>
+            </div>
+        `;
+        
+        showModal();
+        
+        // Auto-mark as read when viewed
+        if (contact.status === 'new') {
+            setTimeout(() => markAsRead(contactId), 1000);
+        }
+    } catch (error) {
+        console.error('Error viewing contact:', error);
+    }
+}
+
+async function markAsRead(contactId) {
+    try {
+        const response = await fetch(`${API_BASE}/contact/${contactId}/status`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: 'read' })
+        });
+
+        if (response.ok) {
+            loadContacts();
+            showSuccess('Contact marked as read');
+        } else {
+            showError('Failed to update contact status');
+        }
+    } catch (error) {
+        console.error('Error updating contact status:', error);
+        showError('Failed to update contact status');
+    }
+}
+
+async function deleteContact(contactId) {
+    if (!confirm('Are you sure you want to delete this contact message?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/contact/${contactId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            loadContacts();
+            showSuccess('Contact deleted successfully');
+        } else {
+            showError('Failed to delete contact');
+        }
+    } catch (error) {
+        console.error('Error deleting contact:', error);
+        showError('Failed to delete contact');
+    }
 }

@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FC Thunder - Admin Panel</title>
+    <title>Dacia Supur - Admin Panel</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="admin-container">
         <header class="admin-header">
-            <h1>FC Thunder Admin Panel</h1>
+            <h1>Dacia Supur Admin Panel</h1>
             <button id="logoutBtn" class="btn btn-danger">Logout</button>
         </header>
 
         <nav class="admin-nav">
             <button class="nav-btn active" data-section="dashboard">Dashboard</button>
-            <button class="nav-btn" data-section="players">Players</button>
-            <button class="nav-btn" data-section="matches">Matches</button>
-            <button class="nav-btn" data-section="news">News</button>
-            <button class="nav-btn" data-section="gallery">Gallery</button>
-            <button class="nav-btn" data-section="sponsors">Sponsors</button>
-            <button class="nav-btn" data-section="contacts">Contacts</button>
+            <button class="nav-btn" data-section="players">Jucatori</button>
+            <button class="nav-btn" data-section="matches">Meciuri</button>
+            <button class="nav-btn" data-section="news">Stiri</button>
+            <button class="nav-btn" data-section="gallery">Galerie</button>
+            <button class="nav-btn" data-section="sponsors">Sponsori</button>
+            <button class="nav-btn" data-section="contacts">Contact</button>
         </nav>
 
         <main class="admin-main">
@@ -28,19 +28,19 @@
                 <h2>Dashboard</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>Players</h3>
+                        <h3>Jucatori</h3>
                         <span id="playersCount">0</span>
                     </div>
                     <div class="stat-card">
-                        <h3>Matches</h3>
+                        <h3>Meciuri</h3>
                         <span id="matchesCount">0</span>
                     </div>
                     <div class="stat-card">
-                        <h3>News Articles</h3>
+                        <h3>Articole</h3>
                         <span id="newsCount">0</span>
                     </div>
                     <div class="stat-card">
-                        <h3>Gallery Items</h3>
+                        <h3>Iteme Galerie</h3>
                         <span id="galleryCount">0</span>
                     </div>
                 </div>
@@ -48,19 +48,19 @@
 
             <section id="players" class="admin-section">
                 <div class="section-header">
-                    <h2>Players Management</h2>
-                    <button class="btn btn-primary" onclick="showPlayerForm()">Add Player</button>
+                    <h2>Management Jucatori</h2>
+                    <button class="btn btn-primary" onclick="showPlayerForm()">Adauga Jucator</button>
                 </div>
                 <div class="table-container">
                     <table id="playersTable">
                         <thead>
                             <tr>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Jersey #</th>
-                                <th>Age</th>
-                                <th>Actions</th>
+                                <th>Poza</th>
+                                <th>Nume</th>
+                                <th>Pozitie</th>
+                                <th>Numar #</th>
+                                <th>Varsta</th>
+                                <th>Actiuni</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -70,19 +70,19 @@
 
             <section id="matches" class="admin-section">
                 <div class="section-header">
-                    <h2>Matches Management</h2>
-                    <button class="btn btn-primary" onclick="showMatchForm()">Add Match</button>
+                    <h2>Management Meciuri</h2>
+                    <button class="btn btn-primary" onclick="showMatchForm()">Adauga Meci</button>
                 </div>
                 <div class="table-container">
                     <table id="matchesTable">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Opponent</th>
-                                <th>Venue</th>
+                                <th>Data</th>
+                                <th>Adversar</th>
+                                <th>Locatie</th>
                                 <th>Status</th>
                                 <th>Score</th>
-                                <th>Actions</th>
+                                <th>Actiuni</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -92,19 +92,19 @@
 
             <section id="news" class="admin-section">
                 <div class="section-header">
-                    <h2>News Management</h2>
-                    <button class="btn btn-primary" onclick="showNewsForm()">Add News</button>
+                    <h2>Management Stiri</h2>
+                    <button class="btn btn-primary" onclick="showNewsForm()">Adauga Stiri</button>
                 </div>
                 <div class="table-container">
                     <table id="newsTable">
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Category</th>
-                                <th>Date</th>
-                                <th>Published</th>
-                                <th>Actions</th>
+                                <th>Titlu</th>
+                                <th>Autor</th>
+                                <th>Categorie</th>
+                                <th><Data></Data></th>
+                                <th>Publicat</th>
+                                <th>Actiuni</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -114,26 +114,26 @@
 
             <section id="gallery" class="admin-section">
                 <div class="section-header">
-                    <h2>Gallery Management</h2>
-                    <button class="btn btn-primary" onclick="showGalleryForm()">Add Media</button>
+                    <h2>Management Galerie</h2>
+                    <button class="btn btn-primary" onclick="showGalleryForm()">Adauga Media</button>
                 </div>
                 <div class="gallery-grid" id="galleryGrid"></div>
             </section>
 
             <section id="sponsors" class="admin-section">
                 <div class="section-header">
-                    <h2>Sponsors Management</h2>
-                    <button class="btn btn-primary" onclick="showSponsorForm()">Add Sponsor</button>
+                    <h2>Management Sponsori</h2>
+                    <button class="btn btn-primary" onclick="showSponsorForm()">Adauga Sponsor</button>
                 </div>
                 <div class="table-container">
                     <table id="sponsorsTable">
                         <thead>
                             <tr>
                                 <th>Logo</th>
-                                <th>Name</th>
-                                <th>Tier</th>
+                                <th>Nume</th>
+                                <th>Nivel</th>
                                 <th>Website</th>
-                                <th>Actions</th>
+                                <th>Actiuni</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -143,18 +143,18 @@
 
             <section id="contacts" class="admin-section">
                 <div class="section-header">
-                    <h2>Contact Messages</h2>
+                    <h2>Mesaje Contact</h2>
                 </div>
                 <div class="table-container">
                     <table id="contactsTable">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Nume</th>
                                 <th>Email</th>
-                                <th>Subject</th>
-                                <th>Date</th>
+                                <th>Subiect</th>
+                                <th>Data</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Actiuni</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
