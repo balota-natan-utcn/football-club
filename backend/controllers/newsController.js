@@ -2,8 +2,22 @@ const News = require('../models/News');
 
 const getAllNews = async (req, res) => {
   try {
-    const { published = true } = req.query;
-    const filter = published === 'all' ? {} : { published: published === 'true' };
+    const { published } = req.query;
+    
+    let filter = {};
+    
+    if (published === 'all') {
+      // Show all articles regardless of published status
+      filter = {};
+    } else if (published === 'false') {
+      // Show only unpublished articles
+      filter = { published: false };
+    } else {
+      // Default: show only published articles
+      // Remove the published filter entirely if not specified
+      // This ensures we get articles where published is true OR undefined
+      filter = { $or: [{ published: true }, { published: { $exists: false } }] };
+    }
     
     const news = await News.find(filter).sort({ createdAt: -1 });
     res.json(news);
