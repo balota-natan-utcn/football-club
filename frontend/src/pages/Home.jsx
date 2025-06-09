@@ -47,18 +47,18 @@ const Home = () => {
     <div className="home">
       <section className="hero">
         <div className="hero-content">
-          <h1>Welcome to FC Thunder</h1>
-          <p>Your Local Football Champions</p>
+          <h1>Bine ai venit la AS Dacia</h1>
+          <p>Cea mai buna echipa din Comuna :)))</p>
           <div className="hero-actions">
-            <Link to="/matches" className="btn btn-primary">View Matches</Link>
-            <Link to="/team" className="btn btn-outline">Meet the Team</Link>
+            <Link to="/matches" className="btn btn-primary">Meciuri</Link>
+            <Link to="/team" className="btn btn-outline">Vezi Echipa</Link>
           </div>
         </div>
       </section>
 
       <div className="container">
         <section className="home-section">
-          <h2>Latest News</h2>
+          <h2>Ultimele Articole</h2>
           <div className="news-grid">
             {latestNews.map(article => (
               <div key={article._id} className="news-card">
@@ -76,7 +76,7 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <Link to="/news" className="btn btn-secondary">View All News</Link>
+          <Link to="/news" className="btn btn-secondary">Vezi Toate Stirile</Link>
         </section>
 
         <section className="home-section">
@@ -89,7 +89,7 @@ const Home = () => {
                   <span className="time">{match.time}</span>
                 </div>
                 <div className="match-teams">
-                  <span className="home-team">FC Thunder</span>
+                  <span className="home-team">AS Dacia</span>
                   <span className="vs">vs</span>
                   <span className="away-team">{match.opponent}</span>
                 </div>
@@ -97,16 +97,16 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <Link to="/matches" className="btn btn-secondary">View All Matches</Link>
+          <Link to="/matches" className="btn btn-secondary">Vezi Toate Meciurile</Link>
         </section>
 
         <section className="home-section">
-          <h2>Recent Results</h2>
+          <h2>Rezultate Recente</h2>
           <div className="results-list">
             {recentResults.map(match => (
               <div key={match._id} className="result-card">
                 <div className="result-teams">
-                  <span className="home-team">FC Thunder</span>
+                  <span className="home-team">AS Dacia</span>
                   <span className="score">
                     {match.isHome ? match.homeScore : match.awayScore} - {match.isHome ? match.awayScore : match.homeScore}
                   </span>
@@ -116,7 +116,7 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <Link to="/results" className="btn btn-secondary">View All Results</Link>
+          <Link to="/results" className="btn btn-secondary">Vezi Toate Rezultatele</Link>
         </section>
       </div>
     </div>

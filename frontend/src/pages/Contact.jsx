@@ -29,7 +29,7 @@ const Contact = () => {
       setSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
-      setError(error.response?.data?.message || 'Failed to send message');
+      setError(error.response?.data?.message || 'Eroare la trimiterea mesajului');
     } finally {
       setLoading(false);
     }
@@ -39,54 +39,50 @@ const Contact = () => {
     <div className="contact-page">
       <div className="container">
         <header className="page-header">
-          <h1>Contact Us</h1>
-          <p>Get in touch with FC Thunder</p>
+          <h1>Contacteaza-ne</h1>
+          <p>Ia legatura cu AS Dacia</p>
         </header>
 
         <div className="contact-content">
           <div className="contact-info">
             <div className="info-section">
-              <h3>Stadium Address</h3>
-              <p>Thunder Stadium<br />
-                 123 Football Street<br />
-                 Sportsville, SP 12345</p>
+              <h3>Adresa</h3>
+              <p>Teren Supur<br />
+                 12 Nustiu Strada<br />
+                 Supuru de Jos, 447300</p>
             </div>
             
             <div className="info-section">
-              <h3>Contact Information</h3>
-              <p>Phone: (555) 123-4567<br />
-                 Email: info@fcthunder.com<br />
-                 Fax: (555) 123-4568</p>
+              <h3>Informatii Contact</h3>
+              <p>Telefon: 0777437229<br />
+                 Email: info@asdacia.com</p>
             </div>
             
             <div className="info-section">
-              <h3>Office Hours</h3>
-              <p>Monday - Friday: 9:00 AM - 6:00 PM<br />
-                 Saturday: 10:00 AM - 4:00 PM<br />
-                 Sunday: Closed</p>
+              
             </div>
           </div>
 
           <div className="contact-form-container">
             {success ? (
               <div className="success-message">
-                <h3>Message Sent Successfully!</h3>
-                <p>Thank you for contacting us. We'll get back to you soon.</p>
+                <h3>Mesaj trimis cu succes!</h3>
+                <p>Iti multumim pentru ca ne contactezi. Iti raspundem curand.</p>
                 <button 
                   className="btn btn-primary" 
                   onClick={() => setSuccess(false)}
                 >
-                  Send Another Message
+                  Trimite alt mesaj
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contact-form">
-                <h3>Send us a Message</h3>
+                <h3>Trimite-ne un mesaj</h3>
                 
                 {error && <div className="error-message">{error}</div>}
                 
                 <div className="form-group">
-                  <label htmlFor="name">Name</label>
+                  <label htmlFor="name">Nume</label>
                   <input
                     type="text"
                     id="name"
@@ -110,7 +106,7 @@ const Contact = () => {
                 </div>
                 
                 <div className="form-group">
-                  <label htmlFor="subject">Subject</label>
+                  <label htmlFor="subject">Subiect</label>
                   <input
                     type="text"
                     id="subject"
@@ -122,7 +118,7 @@ const Contact = () => {
                 </div>
                 
                 <div className="form-group">
-                  <label htmlFor="message">Message</label>
+                  <label htmlFor="message">Mesaj</label>
                   <textarea
                     id="message"
                     name="message"
@@ -134,7 +130,7 @@ const Contact = () => {
                 </div>
                 
                 <button type="submit" className="btn btn-primary" disabled={loading}>
-                  {loading ? 'Sending...' : 'Send Message'}
+                  {loading ? 'Se trimite...' : 'Trimite mesaj'}
                 </button>
               </form>
             )}

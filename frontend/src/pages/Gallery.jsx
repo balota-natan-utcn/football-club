@@ -35,15 +35,15 @@ const Gallery = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading gallery...</div>;
+    return <div className="loading">Se incarca galeria...</div>;
   }
 
   return (
     <div className="gallery-page">
       <div className="container">
         <header className="page-header">
-          <h1>Photo & Video Gallery</h1>
-          <p>Memories and highlights from FC Thunder</p>
+          <h1>Galerie Foto & Video</h1>
+          <p>Amintiri si momente importante Dacia Supur</p>
         </header>
 
         <div className="gallery-filter">
@@ -107,7 +107,7 @@ const Gallery = () => {
 
         {galleryItems.length === 0 && (
           <div className="no-items">
-            <p>No media items available yet.</p>
+            <p>Niciun continut media disponibil.</p>
           </div>
         )}
       </div>

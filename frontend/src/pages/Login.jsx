@@ -61,7 +61,7 @@ const Login = () => {
             </div>
             
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Parola</label>
               <input
                 type="password"
                 id="password"
@@ -78,7 +78,7 @@ const Login = () => {
           </form>
           
           <p className="auth-link">
-            Don't have an account? <Link to="/register">Register here</Link>
+            Nu ai cont? <Link to="/register">Inregistreaza-te aici</Link>
           </p>
         </div>
       </div>

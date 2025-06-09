@@ -26,15 +26,15 @@ const Matches = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading matches...</div>;
+    return <div className="loading">Se incarca meciurile...</div>;
   }
 
   return (
     <div className="matches-page">
       <div className="container">
         <header className="page-header">
-          <h1>Upcoming Matches</h1>
-          <p>Don't miss our upcoming fixtures</p>
+          <h1>Meciuri Viitoare</h1>
+          <p>Nu rata urmatoarele meciuri</p>
         </header>
 
         <div className="matches-grid">
@@ -79,7 +79,7 @@ const Matches = () => {
 
         {matches.length === 0 && (
           <div className="no-matches">
-            <p>No upcoming matches scheduled.</p>
+            <p>Niciun meci programat curand.</p>
           </div>
         )}
       </div>

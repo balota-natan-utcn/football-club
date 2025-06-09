@@ -27,12 +27,12 @@ const Register = () => {
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError('Parolele nu se potrivesc');
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      setError('Parola trebuie sa aiba de minim 6 caractere');
       return;
     }
 
@@ -63,7 +63,7 @@ const Register = () => {
           
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username">Nume Utilizator</label>
               <input
                 type="text"
                 id="username"
@@ -87,7 +87,7 @@ const Register = () => {
             </div>
             
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Parola</label>
               <input
                 type="password"
                 id="password"
@@ -100,7 +100,7 @@ const Register = () => {
             </div>
             
             <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm Password</label>
+              <label htmlFor="confirmPassword">Repeta Parola</label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -118,7 +118,7 @@ const Register = () => {
           </form>
           
           <p className="auth-link">
-            Already have an account? <Link to="/login">Login here</Link>
+            Ai deja cont? <Link to="/login">Logheaza-te aici</Link>
           </p>
         </div>
       </div>

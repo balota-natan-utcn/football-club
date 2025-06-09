@@ -179,10 +179,10 @@ function showPlayerForm(playerId = null) {
                 <label for="playerPosition">Position</label>
                 <select id="playerPosition" name="position" required>
                     <option value="">Select Position</option>
-                    <option value="Goalkeeper">Goalkeeper</option>
-                    <option value="Defender">Defender</option>
-                    <option value="Midfielder">Midfielder</option>
-                    <option value="Forward">Forward</option>
+                    <option value="Portar">Portar</option>
+                    <option value="Fundas">Fundas</option>
+                    <option value="Mijlocas">Mijlocas</option>
+                    <option value="Atacant">Atacant</option>
                 </select>
             </div>
             <div class="form-group">

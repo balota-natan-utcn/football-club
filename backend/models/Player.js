@@ -8,7 +8,7 @@ const playerSchema = new mongoose.Schema({
   position: {
     type: String,
     required: true,
-    enum: ['Goalkeeper', 'Defender', 'Midfielder', 'Forward']
+    enum: ['Portar', 'Fundas', 'Mijlocas', 'Atacant']
   },
   jerseyNumber: {
     type: Number,

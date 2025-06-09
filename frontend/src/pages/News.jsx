@@ -29,15 +29,15 @@ const News = () => {
     : news.filter(article => article.category === selectedCategory);
 
   if (loading) {
-    return <div className="loading">Loading news...</div>;
+    return <div className="loading">Se incarca articolele...</div>;
   }
 
   return (
     <div className="news-page">
       <div className="container">
         <header className="page-header">
-          <h1>Latest News</h1>
-          <p>Stay updated with FC Thunder's latest news and announcements</p>
+          <h1>Ultimele Stiri</h1>
+          <p>Ramai la curent cu ultimele stiri si anunturi ale AS Dacia</p>
         </header>
 
         <div className="category-filter">
@@ -79,7 +79,7 @@ const News = () => {
                   <p>{article.content.substring(0, 200)}...</p>
                 </div>
                 
-                <button className="read-more-btn">Read More</button>
+                <button className="read-more-btn">Citeste mai departe</button>
               </div>
             </article>
           ))}
@@ -87,13 +87,13 @@ const News = () => {
 
         {filteredNews.length === 0 && news.length > 0 && (
           <div className="no-news">
-            <p>No news articles found in the {selectedCategory} category.</p>
+            <p>Niciun articol in categoria {selectedCategory}</p>
           </div>
         )}
 
         {news.length === 0 && (
           <div className="no-news">
-            <p>No news articles available yet.</p>
+            <p>Niciun articol disponibil.</p>
           </div>
         )}
       </div>

@@ -27,20 +27,20 @@ const Sponsors = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading sponsors...</div>;
+    return <div className="loading">Se incarca sponsori...</div>;
   }
 
   return (
     <div className="sponsors-page">
       <div className="container">
         <header className="page-header">
-          <h1>Our Sponsors</h1>
-          <p>We're proud to partner with these amazing organizations</p>
+          <h1>Sponsorii Nostri</h1>
+          <p>Suntem mandri sa fim parteneri cu aceste organizatii extraordinare</p>
         </header>
 
         {groupedSponsors.main.length > 0 && (
           <section className="sponsor-tier">
-            <h2>Main Sponsors</h2>
+            <h2>Sponsori Principali</h2>
             <div className="sponsors-grid main-sponsors">
               {groupedSponsors.main.map(sponsor => (
                 <div key={sponsor._id} className="sponsor-card main">
@@ -60,7 +60,7 @@ const Sponsors = () => {
                         rel="noopener noreferrer"
                         className="sponsor-link"
                       >
-                        Visit Website
+                        Viziteaza Website-ul
                       </a>
                     )}
                   </div>
@@ -72,7 +72,7 @@ const Sponsors = () => {
 
         {groupedSponsors.secondary.length > 0 && (
           <section className="sponsor-tier">
-            <h2>Secondary Sponsors</h2>
+            <h2>Sponsori Secundari</h2>
             <div className="sponsors-grid secondary-sponsors">
               {groupedSponsors.secondary.map(sponsor => (
                 <div key={sponsor._id} className="sponsor-card secondary">
@@ -92,7 +92,7 @@ const Sponsors = () => {
                         rel="noopener noreferrer"
                         className="sponsor-link"
                       >
-                        Visit Website
+                        Viziteaza Website-ul
                       </a>
                     )}
                   </div>
@@ -123,7 +123,7 @@ const Sponsors = () => {
                         rel="noopener noreferrer"
                         className="sponsor-link"
                       >
-                        Visit Website
+                        Viziteaza Website-ul
                       </a>
                     )}
                   </div>
@@ -135,16 +135,16 @@ const Sponsors = () => {
 
         {sponsors.length === 0 && (
           <div className="no-sponsors">
-            <p>No sponsors to display at the moment.</p>
+            <p>Niciun sponsor la momentul de fata.</p>
           </div>
         )}
 
         <section className="sponsor-cta">
           <div className="cta-content">
-            <h2>Become a Sponsor</h2>
-            <p>Join our family of supporters and help FC Thunder achieve greatness. 
-               Contact us to learn about sponsorship opportunities.</p>
-            <a href="/contact" className="btn btn-primary">Contact Us</a>
+            <h2>Devino Sponsor</h2>
+            <p>Alatura-te familiei noastre de suporteri si ajuta Dacia Supur sa reuseasca.
+              Contacteaza-ne pentru a vedea oportunitatile de sponsorizare</p>
+            <a href="/contact" className="btn btn-primary">Contacteaza-ne</a>
           </div>
         </section>
       </div>

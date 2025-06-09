@@ -69,15 +69,15 @@ const Results = () => {
   const stats = getTeamStats();
 
   if (loading) {
-    return <div className="loading">Loading results...</div>;
+    return <div className="loading">Se incarca rezultate...</div>;
   }
 
   return (
     <div className="results-page">
       <div className="container">
         <header className="page-header">
-          <h1>Match Results</h1>
-          <p>Our recent performance and statistics</p>
+          <h1>Rezultate Meciuri</h1>
+          <p>Performance si Statistici Recente</p>
         </header>
 
         {matches.length > 0 && (
@@ -86,27 +86,27 @@ const Results = () => {
             <div className="stats-grid">
               <div className="stat-item">
                 <span className="stat-number">{matches.length}</span>
-                <span className="stat-label">Matches Played</span>
+                <span className="stat-label">Meciuri Jucate</span>
               </div>
               <div className="stat-item wins">
                 <span className="stat-number">{stats.wins}</span>
-                <span className="stat-label">Wins</span>
+                <span className="stat-label">Victorii</span>
               </div>
               <div className="stat-item draws">
                 <span className="stat-number">{stats.draws}</span>
-                <span className="stat-label">Draws</span>
+                <span className="stat-label">Egaluri</span>
               </div>
               <div className="stat-item losses">
                 <span className="stat-number">{stats.losses}</span>
-                <span className="stat-label">Losses</span>
+                <span className="stat-label">Infrangeri</span>
               </div>
               <div className="stat-item">
                 <span className="stat-number">{stats.goalsFor}</span>
-                <span className="stat-label">Goals For</span>
+                <span className="stat-label">Goluri Inscrise</span>
               </div>
               <div className="stat-item">
                 <span className="stat-number">{stats.goalsAgainst}</span>
-                <span className="stat-label">Goals Against</span>
+                <span className="stat-label">Goluri Primite</span>
               </div>
             </div>
           </div>
@@ -168,7 +168,7 @@ const Results = () => {
                   
                   <div className="team away-team">
                     <span className="team-name">
-                      {match.isHome ? match.opponent : 'FC Thunder'}
+                      {match.isHome ? match.opponent : 'AS Dacia'}
                     </span>
                   </div>
                 </div>
@@ -191,13 +191,13 @@ const Results = () => {
 
         {filteredMatches.length === 0 && matches.length > 0 && (
           <div className="no-results">
-            <p>No {selectedFilter === 'all' ? '' : selectedFilter + ' '}results found.</p>
+            <p>Niciun rezultat gasit.</p>
           </div>
         )}
 
         {matches.length === 0 && (
           <div className="no-results">
-            <p>No match results available yet.</p>
+            <p>Niciun rezultat disponibil.</p>
           </div>
         )}
       </div>

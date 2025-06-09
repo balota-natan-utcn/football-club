@@ -15,7 +15,7 @@ const Team = () => {
       const response = await playerService.getAll();
       setPlayers(response.data);
     } catch (error) {
-      console.error('Error fetching players:', error);
+      console.error('Eroare la incarcarea jucatorilor:', error);
     } finally {
       setLoading(false);
     }
@@ -25,18 +25,18 @@ const Team = () => {
     ? players 
     : players.filter(player => player.position === selectedPosition);
 
-  const positions = ['all', 'Goalkeeper', 'Defender', 'Midfielder', 'Forward'];
+  const positions = ['all', 'Portar', 'Fundas', 'Mijlocas', 'Atacant'];
 
   if (loading) {
-    return <div className="loading">Loading team...</div>;
+    return <div className="loading">Se incarca echipa...</div>;
   }
 
   return (
     <div className="team-page">
       <div className="container">
         <header className="page-header">
-          <h1>Our Team</h1>
-          <p>Meet the talented players who represent FC Thunder</p>
+          <h1>Echipa Noastra</h1>
+          <p>Jucatorii care reprezinta echipa AS Dacia Supur</p>
         </header>
 
         <div className="position-filter">
@@ -46,7 +46,7 @@ const Team = () => {
               className={`filter-btn ${selectedPosition === position ? 'active' : ''}`}
               onClick={() => setSelectedPosition(position)}
             >
-              {position === 'all' ? 'All Players' : position}
+              {position === 'all' ? 'Toti Jucatorii' : position}
             </button>
           ))}
         </div>
@@ -68,9 +68,9 @@ const Team = () => {
                 <h3>{player.name}</h3>
                 <p className="position">{player.position}</p>
                 <div className="player-details">
-                  <span>Age: {player.age}</span>
-                  {player.height && <span>Height: {player.height}</span>}
-                  {player.weight && <span>Weight: {player.weight}</span>}
+                  <span>Varsta: {player.age}</span>
+                  {player.height && <span>Inaltime: {player.height}</span>}
+                  {player.weight && <span>Greutate: {player.weight}</span>}
                 </div>
                 {player.bio && (
                   <p className="player-bio">{player.bio}</p>
@@ -82,7 +82,7 @@ const Team = () => {
 
         {filteredPlayers.length === 0 && (
           <div className="no-players">
-            <p>No players found for the selected position.</p>
+            <p>Niciun jucator gasit pentru pozitia respectiva.</p>
           </div>
         )}
       </div>
